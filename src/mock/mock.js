@@ -11,8 +11,8 @@ export default {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
-            articleLists: lists, // 返回状态为200，并且返回todos数据
-          }]);
+            articleLists: lists // 返回状态为200，并且返回todos数据
+          }])
         }, 200)
       })
     })
