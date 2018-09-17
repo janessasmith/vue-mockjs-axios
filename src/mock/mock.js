@@ -1,23 +1,20 @@
-import Mock from 'mockjs'
+import axios from 'axios' // 通过axios-mock-adapter生成代理api地址
+import mockAdapter from 'axios-mock-adapter'
 
-// 获取Mock.Random对象
-let random = Mock.Random;
-// Mock数组
-let articleData = function(opt) {
-    console.log('opt', opt);
-    let articles = [];
-    for (let i = 0; i < 30; i++) {
-        let newArticle = {
-            title: random.ctitle(5), // 随机生成5个中文字标题
-            content: random.csentence(5, 50), // 随机生成中文5-50个字
-            img: random.dataImage('200x120', 'mock图片'), // 随机生成200x120的Base64图片
-            date: random.date() + ' ' + random.time() // 
-        }
-        articles.push(newArticle);
-    }
-    return {
-        data: articles
-    }
+import { lists } from './data/list' // 导入articleList数据
+
+export default {
+  init() { // 初始化函数
+    let mock = new mockAdapter(axios); // 创建 mockAdapter 实例
+    // 获取articleList列表
+    mock.onGet('/list').reply(config => { // config指前台传过来的值
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            articleLists: lists, // 返回状态为200，并且返回todos数据
+          }]);
+        }, 200)
+      })
+    })
+  }
 }
-
-Mock.mock('/articles', /get|post/i, articleData); // 当get或post请求到/news路由时Mock会拦截请求并返回上面的数据

@@ -15,25 +15,21 @@
 </template>
 
 <script>
+  import { getArticles } from '../api/api'
   export default {
     name: "article-wrapper",
     data() {
       return {
         articles: []
-      };
+      }
     },
     created() {
-      this.articleAPI();
-    },
-    methods: {
-      articleAPI: function () {
-        this.$http.post("/articles", "type=web&key=123456").then(res => {
-          console.log(res.data);
-          this.articles = res.data.data;
-        });
-      }
+      getArticles({}).then(res => {
+        const lists = res.data.articleLists
+        this.articles = lists
+      })
     }
-  };
+  }
 
 </script>
 
